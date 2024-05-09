@@ -72,14 +72,11 @@ export default class Text implements View {
   public interactive: boolean;
 
   /**
-   * The function to execute when the text is clicked.
-   */
-  public onClick: () => void;
-
-  /**
    * The style of the text.
    */
   private style: TextStyle;
+
+  private onClickCb: () => void;
 
   /**
    * Constructs a new Text instance.
@@ -92,7 +89,6 @@ export default class Text implements View {
     this.text = text;
     this.interactive = false;
     this.style = { ...new TextStyle(), ...style };
-    this.onClick = () => null;
   }
 
   /**
@@ -136,6 +132,10 @@ export default class Text implements View {
     );
   };
 
+  public onClick = (cb) => {
+    this.onClickCb = cb;
+  };
+
   /**
    * Executes the click action if the text is clicked.
    * @param x The x-coordinate of the click.
@@ -151,7 +151,7 @@ export default class Text implements View {
   ) => {
     if (this.isMouseOver(x, y, ctx, parents)) {
       if (typeof this.onClick === "function") {
-        this.onClick();
+        this.onClickCb();
       }
     }
   };

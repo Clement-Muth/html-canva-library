@@ -1,3 +1,5 @@
+import type Container from "../containers/container";
+
 /**
  * Represents the properties of a TilingSprite.
  */
@@ -32,12 +34,12 @@ export default class TilingSprite {
   /**
    * The width of the TilingSprite.
    */
-  private width: number;
+  public width: number;
 
   /**
    * The height of the TilingSprite.
    */
-  private height: number;
+  public height: number;
 
   /**
    * The image element used for the TilingSprite.
@@ -72,7 +74,16 @@ export default class TilingSprite {
    * Renders the TilingSprite on the canvas.
    * @param ctx The rendering context of the canvas.
    */
-  public render = (ctx: CanvasRenderingContext2D) => {
-    ctx.drawImage(this.image, 0, 0, this.width, this.height);
+  public render = (ctx: CanvasRenderingContext2D, parents: Container[]) => {
+    const absoluteX = parents.reduce((acc, parent) => acc + parent.x, 0);
+    const absoluteY = parents.reduce((acc, parent) => acc + parent.y, 0);
+
+    ctx.drawImage(
+      this.image,
+      absoluteX + 0,
+      absoluteY + 0,
+      this.width,
+      this.height,
+    );
   };
 }
