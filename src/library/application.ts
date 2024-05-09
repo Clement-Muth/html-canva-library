@@ -64,7 +64,7 @@ export default class Application {
   public init = async ({
     background,
     resizeTo,
-  }: { background: string; resizeTo: any }) => {
+  }: { background: string; resizeTo: Window }) => {
     window.addEventListener("resize", this.onResize);
     this.ctx.fillStyle = background;
     this.canvas.width = resizeTo.innerWidth;
@@ -79,7 +79,8 @@ export default class Application {
   private loop = () => {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    for (const child of this.stage.children) child.render(this.ctx, []);
+    for (const child of this.stage.children)
+      child.render(this.ctx, [this.stage]);
 
     requestAnimationFrame(this.loop.bind(this));
   };
